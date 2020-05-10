@@ -44,11 +44,15 @@ GithubClient >> get: aUri [
 
 { #category : #issues }
 GithubClient >> getAllIssues [
-	|res json|
+	|res json issues|
 	res := self get: '/issues'.
 	json := res contents.
-	"TODO: convert json to an array of 'Issue' objects"
-	^ json.
+	issues := (NeoJSONReader on: json readStream)
+		mapInstVarsFor: Issue;
+		for: #ArrayOfIssue 
+      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
+		nextAs: #ArrayOfIssue.
+	^ issues.
 	
 ]
 
