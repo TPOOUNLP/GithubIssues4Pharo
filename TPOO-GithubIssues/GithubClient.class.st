@@ -56,6 +56,19 @@ GithubClient >> getAllIssues [
 	
 ]
 
+{ #category : #issues }
+GithubClient >> getIssuesOfRepo: aRepoFullName [
+	|res json issues|
+	res := self get: '/repos/' , aRepoFullName , '/issues'.
+	json := res contents.
+	issues := (NeoJSONReader on: json readStream)
+		mapInstVarsFor: Issue;
+		for: #ArrayOfIssue 
+      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
+		nextAs: #ArrayOfIssue.
+	^ issues.
+]
+
 { #category : #initialization }
 GithubClient >> initialize [ 
 	baseUrl := 'https://api.github.com'.
