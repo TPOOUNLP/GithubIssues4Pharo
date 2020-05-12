@@ -102,6 +102,25 @@ GithubClient >> initialize [
 					response entity: (ZnEntity html: '<h1>Logged in!</h1>') ]).
 ]
 
+{ #category : #issues }
+GithubClient >> post: anIssue [ 
+	"comment stating purpose of instance-side message"
+	"scope: class-variables  &  instance-variables"	
+			
+	|res json issues|
+	res := self post: '/issues' body: anIssue .
+]
+
+{ #category : #http }
+GithubClient >> post: anUri body: aBody [
+	"Realiza un post sobre un issue de GitHub"
+	"scope: class-variables  &  instance-variables"	
+			
+	|httpClient|
+	httpClient := self buildRequest: anUri.
+	^ httpClient post:anUri contents: aBody ; response.
+]
+
 { #category : #accessing }
 GithubClient >> server [
 	^ server.
