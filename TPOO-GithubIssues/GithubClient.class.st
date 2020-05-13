@@ -103,12 +103,16 @@ GithubClient >> initialize [
 ]
 
 { #category : #issues }
-GithubClient >> post: anIssue [ 
+GithubClient >> post: anIssue [
 	"comment stating purpose of instance-side message"
-	"scope: class-variables  &  instance-variables"	
-			
-	|res json issues|
-	res := self post: '/issues' body: anIssue .
+
+	"scope: class-variables  &  instance-variables"
+
+	| res json issue |
+	json := ''.
+	issue := (NeoJSONWriter on: json) writeObject: anIssue.
+	res := self post: '/issues' body: anIssue.
+	^ res
 ]
 
 { #category : #http }
