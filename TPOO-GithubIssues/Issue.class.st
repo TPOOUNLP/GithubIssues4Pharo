@@ -27,7 +27,8 @@ Class {
 		'number',
 		'state',
 		'title',
-		'body'
+		'body',
+		'user'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -70,4 +71,14 @@ Issue >> title [
 { #category : #accessing }
 Issue >> title: anObject [
 	title := anObject
+]
+
+{ #category : #accessing }
+Issue >> user [
+	^ user
+]
+
+{ #category : #accessing }
+Issue >> user: anObject [
+	user := anObject
 ]
