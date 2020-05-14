@@ -23,7 +23,7 @@ IssueTestCase >> testGetIssuesOfRepo [
 	|issues issue|
 	client authenticate.
 	(Delay forSeconds: 10) wait.
-	issues := client getIssuesOfRepo: 'TPOOUNLP/GithubIssues4Pharo'.
+	issues := client getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
 	self deny: (issues isEmpty).
 	issue := issues at: 1.
 	self assert: (issue title) equals: 'sample'.

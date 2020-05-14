@@ -57,7 +57,7 @@ GithubClient >> getAllIssues [
 ]
 
 { #category : #issues }
-GithubClient >> getIssuesOfRepo: aRepoFullName [
+GithubClient >> getIssuesFromRepo: aRepoFullName [
 	|res json issues|
 	res := self get: '/repos/' , aRepoFullName , '/issues'.
 	json := res contents.
