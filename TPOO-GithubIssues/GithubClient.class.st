@@ -124,7 +124,7 @@ GithubClient >> post: anIssue [
 	| res json issue |
 	json := ''.
 	issue := (NeoJSONWriter on: json) writeObject: anIssue.
-	res := self post: '/issues' body: anIssue.
+	res := self post: '/issues' body: issue.
 	^ res
 ]
 
