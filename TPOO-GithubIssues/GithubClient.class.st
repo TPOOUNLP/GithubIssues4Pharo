@@ -116,7 +116,8 @@ GithubClient >> getIssuesFromRepo: aRepoFullName titleIncludes: aString [
 { #category : #issues }
 GithubClient >> getIssuesFromUser: aRepoFullName user:aUser [
 	|res json issues|
-    res := self get: '/repos/' , aRepoFullName , aUser , '/assignees'.
+    
+    res := self get: '/repos/' , aRepoFullName , '/issues' , '?assignees=', aUser.
 	json := res contents.
 	issues := (NeoJSONReader on: json readStream)
 		mapInstVarsFor: Issue;

@@ -64,3 +64,19 @@ IssueTestCase >> testGetIssuesFromRepo [
 	self assert: issue state equals: 'open'.
 	self assert: issue number equals: 1
 ]
+
+{ #category : #tests }
+IssueTestCase >> testGetIssuesFromUser [
+	| assignedIssues issueAssigned |
+		assignedIssues := client
+		getIssuesFromUser: 'TPOOUNLP/GithubIssues4Pharo'
+		user: 'JuanJoseBarrera'.
+	self deny: assignedIssues isEmpty.
+	issueAssigned := assignedIssues reverse at: 1.
+	self assert: issueAssigned title equals: 'test 1'.
+	self
+		assert: issueAssigned body
+		equals: 'Test to return an issue from a user'.
+	self assert: issueAssigned state equals: 'open'.
+	self assert: issueAssigned number equals: 4
+]
