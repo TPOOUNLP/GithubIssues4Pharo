@@ -16,6 +16,26 @@ IssueTestCase class >> resources [
 	^ Array with: IssueResource
 ]
 
+{ #category : #accessing }
+IssueTestCase >> client [
+	^ client
+]
+
+{ #category : #accessing }
+IssueTestCase >> client: anObject [
+	client := anObject
+]
+
+{ #category : #accessing }
+IssueTestCase >> resource [
+	^ resource
+]
+
+{ #category : #accessing }
+IssueTestCase >> resource: anObject [
+	resource := anObject
+]
+
 { #category : #running }
 IssueTestCase >> setUp [
 	super setUp.
@@ -26,20 +46,21 @@ IssueTestCase >> setUp [
 { #category : #tests }
 IssueTestCase >> testGetAllIssues [
 	| issues |
-	issues := client getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
+	issues := self client
+		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
 	self deny: issues isEmpty.
-
-	self assert: issues size equals: 2
+	self assert: issues size equals: 3
 ]
 
 { #category : #tests }
 IssueTestCase >> testGetIssuesFromRepo [
-	|issues issue|
-	issues := client getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
-	self deny: (issues isEmpty).
-	issue := issues reverse  at: 1.
-	self assert: (issue title) equals: 'sample'.
-	self assert: (issue body) equals: 'body sample'.
-	self assert: (issue state) equals: 'open'.
-	self assert: (issue number) equals: 1.
+	| issues issue |
+	issues := self client
+		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
+	self deny: issues isEmpty.
+	issue := issues reverse at: 1.
+	self assert: issue title equals: 'sample'.
+	self assert: issue body equals: 'body sample'.
+	self assert: issue state equals: 'open'.
+	self assert: issue number equals: 1
 ]
