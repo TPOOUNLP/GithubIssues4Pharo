@@ -49,7 +49,7 @@ IssueTestCase >> testGetAllIssues [
 	issues := self client
 		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
 	self deny: issues isEmpty.
-	self assert: issues size equals: 3
+	self assert: issues size equals: 4
 ]
 
 { #category : #tests }
@@ -69,14 +69,14 @@ IssueTestCase >> testGetIssuesFromRepo [
 IssueTestCase >> testGetIssuesFromUser [
 	| assignedIssues issueAssigned |
 		assignedIssues := client
-		getIssuesFromUser: 'TPOOUNLP/GithubIssues4Pharo'
+		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'
 		user: 'JuanJoseBarrera'.
 	self deny: assignedIssues isEmpty.
 	issueAssigned := assignedIssues reverse at: 1.
 	self assert: issueAssigned title equals: 'test 1'.
 	self
 		assert: issueAssigned body
-		equals: 'Test to return an issue from a user'.
+		equals: 'Test to return an issue from a user.'.
 	self assert: issueAssigned state equals: 'open'.
 	self assert: issueAssigned number equals: 4
 ]
