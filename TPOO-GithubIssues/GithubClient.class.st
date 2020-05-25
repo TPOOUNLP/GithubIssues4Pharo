@@ -18,8 +18,14 @@ Class {
 
 { #category : #auth }
 GithubClient >> authenticate [
-	"Opens url in default browser"
-	WebBrowser openOn: 'https://github.com/login/oauth/authorize?client_id=0f2ea5d52714d541f02c&scope=repo'.
+	('token.st' asFileReference exists) 
+	ifTrue: [ 
+		token := ('token.st' asFileReference readStream contents)
+	] 
+	ifFalse: [
+		"Opens url in default browser"
+		WebBrowser openOn: 'https://github.com/login/oauth/authorize?client_id=0f2ea5d52714d541f02c&scope=repo'
+	].
 ]
 
 { #category : #private }
@@ -32,6 +38,18 @@ GithubClient >> buildRequest: aUri [
 	req headers at: 'Content-Type' put: 'application/json'.
 	req headers at: 'Accept' put: 'application/json'.
 	^httpClient.
+]
+
+{ #category : #issues }
+GithubClient >> createIssue: anIssue repo: aRepoFullName [ 
+	| res json |
+	json := String streamContents: [ :stream |
+					(NeoJSONWriter on: stream)
+						mapInstVarsFor: Issue;
+						nextPut: anIssue 
+	].
+	res := self post: '/repos/', aRepoFullName, '/issues' body: json.
+	^ res
 ]
 
 { #category : #http }
@@ -67,6 +85,32 @@ GithubClient >> getIssuesFromRepo: aRepoFullName [
       		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
 		nextAs: #ArrayOfIssue.
 	^ issues.
+]
+
+{ #category : #issues }
+GithubClient >> getIssuesFromRepo: aRepoFullName bodyIncludes: aString [
+	|res json issues|
+	res := self get: '/repos/' , aRepoFullName , '/issues?assignee=none'.
+	json := res contents.
+	issues := (NeoJSONReader on: json readStream)
+		mapInstVarsFor: Issue;
+		for: #ArrayOfIssue 
+      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
+		nextAs: #ArrayOfIssue.
+	^ issues select: [:issue | issue body includesSubstring: aString ].
+]
+
+{ #category : #issues }
+GithubClient >> getIssuesFromRepo: aRepoFullName titleIncludes: aString [
+	|res json issues|
+	res := self get: '/repos/' , aRepoFullName , '/issues?assignee=none'.
+	json := res contents.
+	issues := (NeoJSONReader on: json readStream)
+		mapInstVarsFor: Issue;
+		for: #ArrayOfIssue 
+      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
+		nextAs: #ArrayOfIssue.
+	^ issues select: [:issue | issue title includesSubstring: aString ].
 ]
 
 { #category : #issues }
@@ -112,20 +156,24 @@ GithubClient >> initialize [
 					self
 						traceCr: '--> Token: ' , (res contents at: 'access_token').
 					token :=  (res contents at: 'access_token').
+					'token.st' asFileReference writeStreamDo: [ :stream | stream nextPutAll: token ].
 					response entity: (ZnEntity html: '<h1>Logged in!</h1>') ]).
 ]
 
-{ #category : #issues }
-GithubClient >> post: anIssue [
-	"comment stating purpose of instance-side message"
+{ #category : #auth }
+GithubClient >> logout [
+	token := nil.
+	'token.st' asFileReference delete.
+]
 
-	"scope: class-variables  &  instance-variables"
-
-	| res json issue |
-	json := ''.
-	issue := (NeoJSONWriter on: json) writeObject: anIssue.
-	res := self post: '/issues' body: issue.
-	^ res
+{ #category : #http }
+GithubClient >> patch: anUri body: aBody [
+	"Realiza un post sobre un issue de GitHub"
+	"scope: class-variables  &  instance-variables"	
+			
+	|httpClient|
+	httpClient := self buildRequest: anUri.
+	^ httpClient patch:anUri contents: aBody ; response.
 ]
 
 { #category : #http }
@@ -136,6 +184,22 @@ GithubClient >> post: anUri body: aBody [
 	|httpClient|
 	httpClient := self buildRequest: anUri.
 	^ httpClient post:anUri contents: aBody ; response.
+]
+
+{ #category : #http }
+GithubClient >> put: anUri body: aBody [
+	"Realiza un post sobre un issue de GitHub"
+	"scope: class-variables  &  instance-variables"	
+			
+	|httpClient|
+	httpClient := self buildRequest: anUri.
+	^ httpClient put:anUri contents: aBody ; response.
+]
+
+{ #category : #release }
+GithubClient >> release [
+	server stop. 
+	server := nil.
 ]
 
 { #category : #accessing }
@@ -156,4 +220,18 @@ GithubClient >> token [
 { #category : #accessing }
 GithubClient >> token: aToken [ 
 	token := aToken
+]
+
+{ #category : #issues }
+GithubClient >> updateIssue: anIssue repo: aRepoFullName [ 
+	| res json |
+	json := String streamContents: [ :stream |
+					(NeoJSONWriter on: stream)
+						mapInstVarsFor: Issue;
+						for: Task do: [ :mapping | ];
+						writeNil: true;
+						nextPut: anIssue 
+	].
+	res := self patch: '/repos/', aRepoFullName, '/issues/' , (anIssue number asString) body: json.
+	^ res
 ]

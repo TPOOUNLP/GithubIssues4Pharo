@@ -25,3 +25,8 @@ IssueResource >> setUp [
 	client := GithubClient new.
 	client authenticate
 ]
+
+{ #category : #running }
+IssueResource >> tearDown [ 
+	client release.
+]

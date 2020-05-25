@@ -1,3 +1,6 @@
+"
+comment
+"
 Class {
 	#name : #IssueTestCase,
 	#superclass : #TestCase,
@@ -14,22 +17,15 @@ IssueTestCase class >> resources [
 ]
 
 { #category : #running }
-IssueTestCase >> defaultTimeLimit [
-	^ 30 seconds.	
-]
-
-{ #category : #running }
 IssueTestCase >> setUp [
 	super setUp.
 	resource := IssueResource current.
-	client := resource client
+	client := resource client.
 ]
 
 { #category : #tests }
 IssueTestCase >> testGetAllIssues [
 	| issues |
-	"client authenticate."
-	(Delay forSeconds: 10) wait.
 	issues := client getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
 	self deny: issues isEmpty.
 
@@ -37,9 +33,8 @@ IssueTestCase >> testGetAllIssues [
 ]
 
 { #category : #tests }
-IssueTestCase >> testGetIssuesOfRepo [
+IssueTestCase >> testGetIssuesFromRepo [
 	|issues issue|
-	(Delay forSeconds: 10) wait.
 	issues := client getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
 	self deny: (issues isEmpty).
 	issue := issues reverse  at: 1.

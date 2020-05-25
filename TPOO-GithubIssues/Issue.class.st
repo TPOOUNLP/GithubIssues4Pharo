@@ -28,7 +28,8 @@ Class {
 		'state',
 		'title',
 		'body',
-		'user'
+		'user',
+		'tasks'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -40,7 +41,7 @@ Issue >> body [
 
 { #category : #accessing }
 Issue >> body: anObject [
-	body := anObject
+	body := anObject.
 ]
 
 { #category : #accessing }
@@ -64,6 +65,22 @@ Issue >> state: anObject [
 ]
 
 { #category : #accessing }
+Issue >> tasks [
+	| lines |
+	tasks
+		ifNil: [ 
+			lines := body lines select: [ :line | line beginsWithAnyOf: #('- [ ] ' '- [x] ') ].
+			tasks := lines collect: [ :line | Task newText: line issue: self ] 
+		].
+	^ tasks
+]
+
+{ #category : #accessing }
+Issue >> tasks: anObject [
+	tasks := anObject
+]
+
+{ #category : #accessing }
 Issue >> title [
 	^ title
 ]
@@ -71,6 +88,11 @@ Issue >> title [
 { #category : #accessing }
 Issue >> title: anObject [
 	title := anObject
+]
+
+{ #category : #actions }
+Issue >> updateTask: aOldText to: aNewText [
+	body := body copyReplaceAll: aOldText with: aNewText.
 ]
 
 { #category : #accessing }
