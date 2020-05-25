@@ -44,6 +44,26 @@ IssueTestCase >> setUp [
 ]
 
 { #category : #tests }
+IssueTestCase >> testCreateIssue [
+	"comment stating purpose of instance-side message"
+
+	"scope: class-variables  &  instance-variables"
+
+	| issues issue size |
+	issue := Issue new.
+	issue title: 'nuevo issue'.
+	issue body: 'body de issue creado en el test'.
+	issues := self client
+		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
+	self deny: issues isEmpty.
+	size := issues size.
+	self client createIssue: issue repo: 'TPOOUNLP/GithubIssues4Pharo'.
+	issues := self client
+		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
+	self assert: issues size equals: size + 1
+]
+
+{ #category : #tests }
 IssueTestCase >> testGetAllIssues [
 	| issues |
 	issues := self client
