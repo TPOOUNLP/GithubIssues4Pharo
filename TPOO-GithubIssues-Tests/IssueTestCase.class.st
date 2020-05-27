@@ -8,7 +8,7 @@ Class {
 		'resource',
 		'client'
 	],
-	#category : #'TPOO-GithubIssues'
+	#category : #'TPOO-GithubIssues-Tests'
 }
 
 { #category : #accessing }
@@ -68,8 +68,7 @@ IssueTestCase >> testGetAllIssues [
 	| issues |
 	issues := self client
 		getIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo'.
-	self deny: issues isEmpty.
-	self assert: issues size equals: 4
+	self deny: issues isEmpty
 ]
 
 { #category : #tests }

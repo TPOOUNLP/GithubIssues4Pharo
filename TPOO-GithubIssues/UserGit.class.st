@@ -1,11 +1,16 @@
 "
-commetn
+usuario de github 
+
+login nickname o nombre visible del usuario
+name nombre completo del usuario de github 
+
 "
 Class {
 	#name : #UserGit,
 	#superclass : #Object,
 	#instVars : [
 		'id',
+		'login',
 		'name',
 		'location',
 		'email'

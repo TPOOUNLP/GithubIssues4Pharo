@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'client'
 	],
-	#category : #'TPOO-GithubIssues'
+	#category : #'TPOO-GithubIssues-Tests'
 }
 
 { #category : #accessing }
