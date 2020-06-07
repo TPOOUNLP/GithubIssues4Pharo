@@ -88,32 +88,6 @@ GithubClient >> getIssuesFromRepo: aRepoFullName [
 ]
 
 { #category : #issues }
-GithubClient >> getIssuesFromRepo: aRepoFullName bodyIncludes: aString [
-	|res json issues|
-	res := self get: '/repos/' , aRepoFullName , '/issues?assignee=none'.
-	json := res contents.
-	issues := (NeoJSONReader on: json readStream)
-		mapInstVarsFor: Issue;
-		for: #ArrayOfIssue 
-      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
-		nextAs: #ArrayOfIssue.
-	^ issues select: [:issue | issue body includesSubstring: aString ].
-]
-
-{ #category : #issues }
-GithubClient >> getIssuesFromRepo: aRepoFullName titleIncludes: aString [
-	|res json issues|
-	res := self get: '/repos/' , aRepoFullName , '/issues?assignee=none'.
-	json := res contents.
-	issues := (NeoJSONReader on: json readStream)
-		mapInstVarsFor: Issue;
-		for: #ArrayOfIssue 
-      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
-		nextAs: #ArrayOfIssue.
-	^ issues select: [:issue | issue title includesSubstring: aString ].
-]
-
-{ #category : #issues }
 GithubClient >> getIssuesFromRepo: aRepoFullName user:aUser [
 	|res json issues|
     
@@ -125,6 +99,19 @@ GithubClient >> getIssuesFromRepo: aRepoFullName user:aUser [
       		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
 		nextAs: #ArrayOfIssue.
 	^ issues.
+]
+
+{ #category : #issues }
+GithubClient >> getUnassignedIssuesFromRepo: aRepoFullName matching: aBlock [
+	|res json issues|
+	res := self get: '/repos/' , aRepoFullName , '/issues?assignee=none'.
+	json := res contents.
+	issues := (NeoJSONReader on: json readStream)
+		mapInstVarsFor: Issue;
+		for: #ArrayOfIssue 
+      		customDo: [ :mapping | mapping listOfElementSchema: Issue ];
+		nextAs: #ArrayOfIssue.
+	^ issues select: aBlock.
 ]
 
 { #category : #initialization }
