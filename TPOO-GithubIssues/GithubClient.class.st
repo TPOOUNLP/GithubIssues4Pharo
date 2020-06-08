@@ -11,10 +11,24 @@ Class {
 	],
 	#classInstVars : [
 		'server',
-		'token'
+		'token',
+		'instance'
 	],
 	#category : #'TPOO-GithubIssues'
 }
+
+{ #category : #accessing }
+GithubClient class >> instance [
+	instance
+		ifNil: [ 
+			instance := self new.
+			"TODO: Add an authenticate flow and quit delay"
+			instance authenticate.			
+			(Delay forSeconds: 10) wait.
+			^ instance 
+	].
+	^ instance
+]
 
 { #category : #auth }
 GithubClient >> authenticate [
