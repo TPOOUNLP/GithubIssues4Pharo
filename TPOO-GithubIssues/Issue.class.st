@@ -115,6 +115,13 @@ Issue >> created_at: anObject [
 	created_at := anObject
 ]
 
+{ #category : #testing }
+Issue >> hasTasks [
+	"returns true if the issue has a task list"
+
+	^ self tasks isNotEmpty
+]
+
 { #category : #accessing }
 Issue >> milestone [
 	^ milestone
