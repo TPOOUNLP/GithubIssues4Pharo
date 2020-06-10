@@ -38,6 +38,16 @@ leftDrawner whenSelectedItemChanged: [ :item |
 ]
 
 { #category : #initialization }
+SpGithubApp >> displayTask: aIssue [
+	| registeredTaskList|
+	registeredTaskList := SpListPresenter new.
+	registeredTaskList
+		items: aIssue tasks;
+		display: [ :item | item ].
+	registeredTaskList openWithSpec title: 'Registered Tasks'
+]
+
+{ #category : #initialization }
 SpGithubApp >> initializePresenters [
 leftDrawner  := self instantiate: SpLeftDrawner.
 issues  := self instantiate: SpIssuesList.
@@ -51,6 +61,7 @@ issues whenSelectedItemChanged: [ :issue |
 	aOrderedCollection add: (LabelAndItem newLabel: 'body' item: (issue body)).
 	aOrderedCollection add: (LabelAndItem newLabel: 'state' item: (issue state)).
 	aOrderedCollection add: (LabelAndItem newLabel: 'milestone' item: (issue milestone)).
+	aOrderedCollection add: (LabelAndItem newLabel: 'task' item: (self displayTask: issue)).
 	issueDetail items: aOrderedCollection
 ].
 
