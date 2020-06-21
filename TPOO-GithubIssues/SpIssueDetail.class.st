@@ -5,7 +5,8 @@ Class {
 	#name : #SpIssueDetail,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'issueDetail'
+		'issueDetail',
+		'issueTask'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -20,8 +21,10 @@ SpIssueDetail class >> defaultSpec [
 { #category : #initialization }
 SpIssueDetail >> initializePresenters [
 	issueDetail := self newTable
+	
 		addColumn: (SpStringTableColumn title: 'Label' evaluated: #label);
 		addColumn: (SpStringTableColumn title: 'Value' evaluated: #item);
+		addColumn: (SpStringTableColumn title: 'task' evaluated: #task);
 		yourself.
 ]
 

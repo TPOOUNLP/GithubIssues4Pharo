@@ -61,7 +61,7 @@ issues whenSelectedItemChanged: [ :issue |
 	aOrderedCollection add: (LabelAndItem newLabel: 'body' item: (issue body)).
 	aOrderedCollection add: (LabelAndItem newLabel: 'state' item: (issue state)).
 	aOrderedCollection add: (LabelAndItem newLabel: 'milestone' item: (issue milestone)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'task' item: (self displayTask: issue)).
+	aOrderedCollection add: (LabelAndItem newLabel: 'task' item: (issue tasks)).
 	issueDetail items: aOrderedCollection
 ].
 

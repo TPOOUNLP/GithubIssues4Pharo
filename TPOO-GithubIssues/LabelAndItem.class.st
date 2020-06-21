@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'label',
-		'item'
+		'item',
+		'task'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -38,4 +39,14 @@ LabelAndItem >> label [
 { #category : #accessing }
 LabelAndItem >> label: anObject [
 	label := anObject
+]
+
+{ #category : #accessing }
+LabelAndItem >> task [
+	^ task
+]
+
+{ #category : #accessing }
+LabelAndItem >> task: anObject [
+	task := anObject
 ]
