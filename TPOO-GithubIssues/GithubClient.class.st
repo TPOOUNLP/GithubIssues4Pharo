@@ -235,5 +235,7 @@ GithubClient >> updateIssue: anIssue repo: aRepoFullName [
 						nextPut: anIssue 
 	].
 	res := self patch: '/repos/', aRepoFullName, '/issues/' , (anIssue number asString) body: json.
+	res writeOn: Transcript.
+Transcript flush.
 	^ res
 ]

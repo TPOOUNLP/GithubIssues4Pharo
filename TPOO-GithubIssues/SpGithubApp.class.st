@@ -54,15 +54,7 @@ issues  := self instantiate: SpIssuesList.
 issueDetail:= self instantiate: SpIssueDetail.
 
 issues whenSelectedItemChanged: [ :issue | 
-	|aOrderedCollection|
-	aOrderedCollection := OrderedCollection new.
-	aOrderedCollection add: (LabelAndItem newLabel: 'number' item: (issue number)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'title' item: (issue title)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'body' item: (issue body)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'state' item: (issue state)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'milestone' item: (issue milestone)).
-	aOrderedCollection add: (LabelAndItem newLabel: 'task' item: (issue tasks)).
-	issueDetail items: aOrderedCollection
+	issueDetail issue: issue.
 ].
 
 self focusOrder add: leftDrawner; add: issueDetail; add: issueDetail.

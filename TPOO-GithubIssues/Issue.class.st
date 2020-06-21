@@ -29,7 +29,6 @@ Class {
 		'title',
 		'body',
 		'user',
-		'assignee',
 		'assignees',
 		'milestone',
 		'comments',
@@ -40,16 +39,6 @@ Class {
 	],
 	#category : #'TPOO-GithubIssues'
 }
-
-{ #category : #accessing }
-Issue >> assignee [
-	^ assignee
-]
-
-{ #category : #accessing }
-Issue >> assignee: anObject [
-	assignee := anObject
-]
 
 { #category : #accessing }
 Issue >> assignees [
@@ -76,6 +65,12 @@ Issue >> bodyIncludes: aText [
 	"verifies if a given text is included in issue's body"
 
 	^ self body includesSubstring: aText
+]
+
+{ #category : #actions }
+Issue >> close [
+	state := 'closed'.
+	(GithubClient instance) updateIssue: self repo: 'TPOOUNLP/GithubIssues4Pharo'.
 ]
 
 { #category : #accessing }
@@ -156,6 +151,12 @@ Issue >> olderCreation: aDate [
 	^ self created_at asDateAndTime > aDate
 ]
 
+{ #category : #actions }
+Issue >> open [
+	state := 'open'.
+	(GithubClient instance) updateIssue: self repo: 'TPOOUNLP/GithubIssues4Pharo'.
+]
+
 { #category : #accessing }
 Issue >> state [
 	^ state
@@ -202,6 +203,7 @@ Issue >> titleIncludes: aText [
 { #category : #actions }
 Issue >> updateTask: aOldText to: aNewText [
 	body := body copyReplaceAll: aOldText with: aNewText.
+	(GithubClient instance) updateIssue: self repo: 'TPOOUNLP/GithubIssues4Pharo'.
 ]
 
 { #category : #accessing }
