@@ -8,7 +8,9 @@ Class {
 		'leftDrawner',
 		'issues',
 		'app',
-		'issueDetail'
+		'issueDetail',
+		'allIssues',
+		'myIssues'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -20,6 +22,16 @@ SpGithubApp class >> defaultSpec [
 	yourself.
 ]
 
+{ #category : #accessing }
+SpGithubApp >> allIssues [
+	^ allIssues
+]
+
+{ #category : #accessing }
+SpGithubApp >> allIssues: anObject [
+	allIssues := anObject.
+]
+
 { #category : #initialization }
 SpGithubApp >> connectPresenters [
 leftDrawner whenSelectedItemChanged: [ :item |
@@ -27,11 +39,11 @@ leftDrawner whenSelectedItemChanged: [ :item |
 		ifNil: [ issues items: #(). ]
 		ifNotNil: [
 			item = 'My issues' ifTrue: [ 
-				issues items: (GithubClient instance getAllIssues).
+				issues items: self allIssues.
 			].
 		
 			item = 'Project' ifTrue: [ 
-				issues items: (GithubClient instance getUnassignedIssuesFromRepo: 'TPOOUNLP/GithubIssues4Pharo' matching: [:elem | true]).
+				issues items: self myIssues.
 			].
 		].
 ]
@@ -58,9 +70,28 @@ issues whenSelectedItemChanged: [ :issue |
 ].
 
 self focusOrder add: leftDrawner; add: issueDetail; add: issueDetail.
+
+[ 
+	[ 1 > 0 ]	 whileTrue: [ 
+		
+		 self allIssues:(GithubClient instance getAllIssues).
+		 self myIssues: (GithubClient instance getUnassignedIssuesFromRepo:'TPOOUNLP/GithubIssues4Pharo' matching: [:elem | true]).
+		(Delay forSeconds: 10) wait. 
+	 ]
+] fork.
 ]
 
 { #category : #initialization }
 SpGithubApp >> initializeWindow: aWindowPresenter [
 	aWindowPresenter title: 'Github App'
+]
+
+{ #category : #accessing }
+SpGithubApp >> myIssues [
+	^ myIssues
+]
+
+{ #category : #accessing }
+SpGithubApp >> myIssues: anObject [
+	myIssues := anObject.
 ]
