@@ -51,11 +51,13 @@ leftDrawner whenSelectedItemChanged: [ :item |
 
 { #category : #initialization }
 SpGithubApp >> displayTask: aIssue [
-	| registeredTaskList|
+	| registeredTaskList  |
+	
+	
 	registeredTaskList := SpListPresenter new.
 	registeredTaskList
 		items: aIssue tasks;
-		display: [ :item | item ].
+		display: [ :item | item names].
 	registeredTaskList openWithSpec title: 'Registered Tasks'
 ]
 
