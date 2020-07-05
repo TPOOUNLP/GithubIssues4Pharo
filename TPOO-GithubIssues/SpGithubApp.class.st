@@ -10,7 +10,8 @@ Class {
 		'app',
 		'issueDetail',
 		'allIssues',
-		'myIssues'
+		'myIssues',
+		'actualSection'
 	],
 	#category : #'TPOO-GithubIssues'
 }
@@ -38,6 +39,7 @@ leftDrawner whenSelectedItemChanged: [ :item |
 	item 
 		ifNil: [ issues items: #(). ]
 		ifNotNil: [
+			actualSection := item.
 			item = 'My issues' ifTrue: [ 
 				issues items: self allIssues.
 			].
@@ -78,6 +80,13 @@ self focusOrder add: leftDrawner; add: issueDetail; add: issueDetail.
 		
 		 self allIssues:(GithubClient instance getAllIssues).
 		 self myIssues: (GithubClient instance getUnassignedIssuesFromRepo:'TPOOUNLP/GithubIssues4Pharo' matching: [:elem | true]).
+		 actualSection  = 'My issues' ifTrue: [ 
+			issues items: self allIssues.
+		 ].
+		
+		 actualSection  = 'Project' ifTrue: [ 
+			issues items: self myIssues.
+		 ].
 		(Delay forSeconds: 10) wait. 
 	 ]
 ] fork.

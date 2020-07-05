@@ -34,6 +34,10 @@ SpIssueDetail >> initializePresenters [
 			label: 'Close issue';
 			action: [ issue ifNotNil:  [ issue close. self issue: issue.] ];
 			yourself);
+		addItem: (SpToolBarButton new
+			label: 'Comment';
+			action: [ issue ifNotNil:  [ |window| window := SpIssueComment new. window issue: issue. window openWithSpec. ] ];
+			yourself);
 		yourself.
 	issueBodyDetail:= self instantiate: SpIssueBodyDetail.
 	issueTasksDetail := self instantiate: SpIssueTasksDetail.

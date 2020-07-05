@@ -55,6 +55,18 @@ GithubClient >> buildRequest: aUri [
 ]
 
 { #category : #issues }
+GithubClient >> commentIssue: anIssue comment: aIssueComment repo: aRepoFullName [ 
+	| res json |
+	json := String streamContents: [ :stream |
+					(NeoJSONWriter on: stream)
+						mapInstVarsFor: IssueComment ;
+						nextPut: aIssueComment. 
+	].
+	res := self post: '/repos/', aRepoFullName, '/issues/', (anIssue number asString), '/comments' body: json.
+	^ res
+]
+
+{ #category : #issues }
 GithubClient >> createIssue: anIssue repo: aRepoFullName [ 
 	| res json |
 	json := String streamContents: [ :stream |
