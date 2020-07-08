@@ -33,6 +33,7 @@ SpIssuesList >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 SpIssuesList >> items: aCollection [
 	issuesList items: aCollection.
+	self changed.
 ]
 
 { #category : #initialization }
