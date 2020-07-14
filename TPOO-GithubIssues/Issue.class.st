@@ -29,7 +29,6 @@ Class {
 		'title',
 		'body',
 		'user',
-		'assignees',
 		'milestone',
 		'comments',
 		'created_at',
@@ -39,16 +38,6 @@ Class {
 	],
 	#category : #'TPOO-GithubIssues'
 }
-
-{ #category : #accessing }
-Issue >> assignees [
-	^ assignees
-]
-
-{ #category : #accessing }
-Issue >> assignees: anObject [
-	assignees := anObject
-]
 
 { #category : #accessing }
 Issue >> body [
